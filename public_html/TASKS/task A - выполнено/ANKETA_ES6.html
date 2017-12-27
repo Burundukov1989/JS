@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>ANKETA_ES6</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+        #My_text {font-size: 20px;
+                  min-height: 10vh;
+                  min-width: 20vw; 
+                  height: auto;
+                  border: solid red 2px;
+                  display: inline-block;}
+       </style>    
+    </head>
+    <body>
+         <div id="My_text">
+        </div>
+
+	<form>
+	<input type="button" value="Выполнить" onclick="Begin()">
+        </form> 
+        <script type="text/javascript"> 
+           "use strict"; 
+
+   let Begin = () => {  
+
+   let Full_name = (name, text) => {     
+                name=prompt(text,'');
+                if (isNaN(name) === false || name ==='') {
+                do {name=prompt(`Введите корректные данные:\n ${text}`);}
+                while (isNaN(name) === false || name ===''); }        
+                return(name);};
+ 
+   let Age_request = () => {
+                let age, gender, gender_new, pension_gender;  
+                age=Number(prompt( 'Введите возраст в годах:',''));
+                if (isNaN(age)=== true || age==='' || age<=0 || age>100) 
+		{do {age=prompt('Введите корректные данные:\n' + 'Введите возраст в годах:');}
+		while (isNaN(age)=== true || age==='' || age<=0 || age>100);};    
+                
+            gender=confirm('Ваш пол мужской?');
+            (gender === true)?(gender_new='мужской'):(gender_new='женский'); 
+            console.log(gender_new); 
+                
+	     (((age>60) && (gender_new='мужской')) || ((age>55) && (gender_new='женский')))?(pension_gender='да'):(pension_gender='нет');	        
+  
+             return [`Ваш возраст в годах: ${age}; <br> Ваш возраст в днях: ${365*age};<br> Через 5 лет Вам будет: ${age + 5}; <br> Ваш пол: ${gender_new}; 
+                        <br> Вы на пенсии: ${pension_gender}.`]; 
+                };    
+
+
+    document.getElementById('My_text').
+            innerHTML=(`Ваше ФИО: ${Full_name(name, 'Введите имя:')}
+                                  ${Full_name(name, 'Введите отчество:')}
+                                  ${Full_name(name, 'Введите фамилию:')} <br>
+                                  ${Age_request()}`);
+
+};                       
+                        
+</script>
+    
+    </body>
+</html> 
+

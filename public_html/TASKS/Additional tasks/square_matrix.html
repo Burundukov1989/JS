@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Array [i][j]</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+        #My_text {
+                  font-size: 15px;
+                  line-height: 12px; 
+                  min-height: 5vh;
+                  min-width: 5vw; 
+                  height: auto;
+                  border: solid red 2px;
+                  display: inline-block;
+                  margin-top: 10px;}
+      #sum {display: inline-block;
+            color: red;  }
+      #Size_array {margin:10px;} 
+      #main_button {width: 290px;}
+
+       </style>    
+    </head>
+    <body>
+       <form>
+	 <input type="button" id="main_button" value="Выполнить" onclick="Begin()"> <br>
+<span> Размер квадратного массива: </span> 
+<input type="text" id="Size_array" size="3" value="5"> <br>
+<span> Сумма элементов под главной диагональю: </span> 
+<div id='sum'> </div> <br>
+<div id="My_text"> </div> <br>
+
+<a onclick="document.forms[0].submit()"> отправить </a>
+       </form> 
+
+
+        <script>
+           "use strict"; 
+function Begin() 
+{    
+const N = 1, M = 9;
+var a = new Array;
+var sum = 0;
+var my_array = '';
+var
+Size_array = parseInt(document.getElementById('Size_array').value);
+if (isNaN(Size_array) === true || Size_array ==='' || Size_array <= 0) 	
+{alert("Введите корректные данные!");}
+	
+for (let i = 0; i < Size_array; i++)
+          {
+  a[i] = []; 
+    for (let j = 0; j < Size_array; j++)  
+{a[i][j] = (Math.floor(Math.random()*(M - N + 1)) + N );
+if (i > j)
+{sum  = sum + a[i][j];};
+};
+my_array = my_array + a[i] + '<br>';
+document.getElementById("My_text").innerHTML = (`${my_array}`);
+         };           
+
+console.log(a);
+document.getElementById("sum").innerHTML = (sum);};
+                      
+let My_function = () =>   
+{
+    
+};
+</script>  
+    </body>
+</html>  
+
+

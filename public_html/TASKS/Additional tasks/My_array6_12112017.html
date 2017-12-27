@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Array</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #main {
+            position: relative;
+            font-size: 8vh;
+        }
+
+        #first_text {
+            position: absolute;
+            top: 0;
+            height: 10vh;
+            display: inline;
+            min-width: 15vw;
+            line-height: 10vh;
+            padding: 2px;
+            border: solid red 2px;
+        }
+
+        #second_text {
+            position: absolute;
+            top: 15vh;
+            height: 10vh;
+            padding: 2px;
+            display: inline;
+            line-height: 10vh;
+            min-width: 15vw;
+            border: solid red 2px;
+        }
+
+        form {
+            position: absolute;
+            top: 35vh;
+        }
+    </style>
+
+    <body>
+        <div id="main">
+            <div id="first_text"> </div>
+            <div id="second_text"> </div>
+        </div>
+        <form>
+            <input type="button" value="Выполнить сортировку" onclick="Begin()">
+        </form>
+
+        <script type="text/javascript">
+            "use strict";
+            let Begin = () => {
+                const N = 1,
+                    M = 9;
+                let a = new Array;
+                let Array_length = parseInt(prompt('Введите длину массива больше 3:', '')); // сделать проверкe
+                for (var count = 0; count < Array_length; count++)
+                    a[count] = Math.floor(Math.random() * (M - N + 1)) + N;
+                document.getElementById('first_text').innerHTML = (`Было:&nbsp ${a}`);
+
+                if (!a || !(a instanceof Array)) throw "Not an array";
+                switch (a.length) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                       {document.getElementById('second_text').innerHTML = (`Стало: ${a}`);
+                        alert('массив не преобразован');
+                        break;};
+                    case 4:
+                    case 5:
+                        {
+                            let x = a[1];
+                            a[1] = a[0];
+                            a[0] = x;
+                            x = a[a.length - 1];
+                            a[a.length - 1] = a[a.length - 2];
+                            a[a.length - 2] = x;
+                            document.getElementById('second_text').innerHTML = (`Стало: ${a}`);
+                            break; 
+                        };
+                    default:
+                        {
+                            if (a.length % 2 === 0)
+                                var first_part = (a.length / 2 - 1),
+                                    second_part = first_part + 1; //середина массива 
+                            else {
+                                first_part = (Math.floor(a.length / 2) - 1);
+                                second_part = first_part + 2;
+                            };
+                            console.log(first_part);
+                            console.log(second_part);
+                            let center = a.length / 4 >> 0;
+                            for (var i = 0; i < center; i++) // количество операций
+                            {
+                                let y = a[first_part - i];
+                                a[first_part - i] = a[i];
+                                a[i] = y;
+
+                                let z = a[(a.length - 1) - i];
+                                a[(a.length - 1) - i] = a[second_part + i];
+                                a[second_part + i] = z;
+                            };
+                            console.log(a);
+
+                        };
+                };
+                document.getElementById('second_text').innerHTML = (`Стало: ${a}`);
+            };
+        </script>
+
+    </body>
+
+</html>
+

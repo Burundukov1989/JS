@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>3D_КУБ</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       
+        <script src="three.min.js"></script>
+
+    </head>
+    <body id="main">
+
+<script>
+//        <script src="e:\ОБУЧЕНИЕ\HTML5Application\public_html\three.js\three.js-dev\src\three.js"> 
+var camera, scene, renderer;
+var geometry, material, mesh;
+
+init();
+animate();
+
+function init() {
+//тип камеры
+	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
+//положение камеры        
+	camera.position.z = 1;
+
+
+//сцена
+	scene = new THREE.Scene();
+
+//геометрия и материал
+	geometry = new THREE.BoxGeometry( 0.5, 0.5, 0.5);
+	material = new THREE.MeshNormalMaterial();
+//меш
+	mesh = new THREE.Mesh( geometry, material );
+	scene.add( mesh );
+//рендер
+	renderer = new THREE.WebGLRenderer( { antialias: true } );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+//добавление рендера в body        
+	document.body.appendChild( renderer.domElement );
+        
+//источник света        
+var pointLight = new THREE.PointLight( 0xff0000, 1, 100 );
+pointLight.position.set( 50, 50, 50 );
+
+}
+//добавление анимации
+function animate() {
+
+	requestAnimationFrame( animate );
+
+	mesh.rotation.x += 0.01;
+	mesh.rotation.y += 0.01;
+
+	renderer.render( scene, camera );
+
+}
+</script>
+    </body>
+</html>

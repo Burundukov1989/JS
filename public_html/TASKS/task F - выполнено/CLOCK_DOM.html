@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+     .numberCircle {position: absolute;
+                    top: 25px;    
+                    left: 270px;
+                    background: Red;
+                    height: 80px;
+                    width: 80px;
+                    border-radius: 40px;   
+                    transform-origin: 40px 290px;
+                    font-size: 50px;
+                    text-align: center;
+                    line-height: 80px;}
+     .numberClock {position: absolute;
+                   color: brown;
+                   top: 200px;    
+                   left: 280px;
+                   z-index: 4;
+                   width: 80px;
+                   }
+        </style> 
+    </head>
+    <body id="main">
+    
+    <div class="numberClock"> 
+        <span id='TTT'> </span>
+        <br>
+        <input type="button" value="&nbsp;STOP&nbsp;" onclick="STOP()" > <br> 
+        <input type="button" value="START" onclick="START()">  <br> 
+    </div>
+        
+        <script>
+            
+       "use strict";    
+var timer;  
+
+var ParentElement=document.getElementById('main'),//находим тэг(body) по id
+    bigCircle=document.createElement('div');
+    bigCircle.style.margin = '5px';
+    bigCircle.style.position = 'absolute';
+    bigCircle.style.background = 'lightgreen';
+    bigCircle.style.height = '600px';
+    bigCircle.style.width = '600px';
+    bigCircle.style.borderRadius = '300px';    
+    ParentElement.appendChild(bigCircle);//добавление формы в body   
+    
+var smallCircle=document.createElement('div');
+    smallCircle.style.position = 'absolute';
+    smallCircle.style.top = '300px';    
+    smallCircle.style.left = '300px';
+    smallCircle.style.background = 'Black';
+    smallCircle.style.height = '20px';
+    smallCircle.style.width = '20px';
+    smallCircle.style.borderRadius = '10px';    
+    ParentElement.appendChild(smallCircle);//добавление формы в body      
+     
+var SecondsArrow=document.createElement('div');
+    SecondsArrow.style.border='solid';
+    SecondsArrow.style.borderWidth='2px'; //итого толщина 4              
+    SecondsArrow.style.height = '200px';
+    SecondsArrow.style.position = 'absolute';
+    SecondsArrow.style.top = '106px';    
+    SecondsArrow.style.left = '308px';
+    SecondsArrow.style.zIndex = '2';    
+    SecondsArrow.style.transformOrigin = '2px bottom';
+    SecondsArrow.setAttribute('id','Seconds'); 
+    ParentElement.appendChild(SecondsArrow); 
+
+var MinutesArrow=document.createElement('div');
+    MinutesArrow.style.margin = '0';
+    MinutesArrow.style.border='solid';
+    MinutesArrow.style.borderWidth='4px';   
+    MinutesArrow.style.height = '150px';
+    MinutesArrow.style.position = 'absolute';
+    MinutesArrow.style.top = '150px';    
+    MinutesArrow.style.left = '306px';  
+    MinutesArrow.style.transformOrigin = '4px bottom';
+    MinutesArrow.setAttribute('id','Minutes'); 
+    ParentElement.appendChild(MinutesArrow);      
+
+var HoursArrow=document.createElement('div');
+    HoursArrow.style.margin = '0';
+    HoursArrow.style.border='solid';
+    HoursArrow.style.borderWidth='6px';   
+    HoursArrow.style.height = '100px';
+    HoursArrow.style.position = 'absolute';
+    HoursArrow.style.top = '200px';    
+    HoursArrow.style.left = '304px';  
+    HoursArrow.style.transformOrigin = '6px bottom';
+    HoursArrow.setAttribute('id','Hours'); 
+    ParentElement.appendChild(HoursArrow);
+
+for (var i = 1; i <= 12; i++)
+{
+var numberCircle=document.createElement('div');
+    numberCircle.setAttribute('class','numberCircle'); 
+    numberCircle.setAttribute('id','Rotate'+i); 
+    ParentElement.appendChild(numberCircle);
+    document.getElementById('Rotate'+i).style.transform = 'rotate(' + 30*i + 'deg)'; 
+    
+var SpanText=document.createElement('span');          
+    SpanText.style.transformOrigin='25 0'; 
+    SpanText.style.display='inline-block';
+    SpanText.style.transform = 'rotate(' + -30*i + 'deg)';
+    SpanText.innerHTML=i;
+    numberCircle.appendChild(SpanText);  
+    }       
+    
+function realClock()
+{var 
+ clock=new Date(),
+ clockHours = clock.getHours(),
+ clocktMinutes = clock.getMinutes(),
+ clockSeconds = clock.getSeconds();
+ document.getElementById("Seconds").style.transform = 'rotate(' + 6*clockSeconds + 'deg)';
+ document.getElementById("Minutes").style.transform = 'rotate(' + 6*clocktMinutes + 'deg)';
+ document.getElementById("Hours").style.transform = 'rotate(' + 31*clockHours + 'deg)'; 
+ 
+ document.getElementById('TTT').innerHTML=`${str0l(clockHours,2)}:${str0l(clocktMinutes,2)}:${str0l(clockSeconds,2)}`;
+ };  
+      
+function START()
+{timer = setInterval(realClock,1000);};
+
+function STOP()   
+{clearTimeout(timer);}; 
+ 
+    function str0l(val,len) {
+        var strVal=val.toString();
+        while ( strVal.length < len )
+            strVal='0'+strVal;
+        return strVal;}
+
+        </script>    
+    </body>
+</html>
+
+
+   
+
+
+
+

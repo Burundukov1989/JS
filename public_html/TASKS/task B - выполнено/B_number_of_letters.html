@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Количество гласных</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            
+        form {border: solid;
+              border-color: green; 
+              padding: 10px;
+              display: inline-block;}    
+        .main_button {display: inline-block;
+                      margin-bottom: 5px;}
+        #number_of_elements {
+            display: inline-block;
+            color: red;} 
+        </style>
+    </head>
+    <body>     
+<form>
+<input type="button" class="main_button" value="Расчет количества гласных" onclick="Begin_regular()"> <br>
+<span> Введите строку: </span> <br>
+<textarea rows="2" cols="24" maxlength="100" id="string"> </textarea> <br>
+<span> Количество гласных: </span>
+<div id="number_of_elements"> </div> <br>
+
+</form> 
+ <div id="my_div"> </div>       
+       <script>
+           
+
+
+let my_letters = () => //функция создания хэша с ключами из гласных
+{
+My_string = 'аоэиуыеёюя'; //строка гласных
+My_string+=My_string.toUpperCase();//строка строчных и прописных букв
+Array_of_letters = {}; //объявление хэша
+letters_string = My_string.split(''); //массив гласных букв из строки
+n = letters_string.length; //количество букв
+for (var i = 0; i < n; i++)
+{Array_of_letters[letters_string[i]]=true;}; //ключ хэша буква - true значение ключа 
+};
+
+
+let My_Number = (My_string) => //чистая функция
+{
+var number_of_elements = My_string.match(/[аоэиуыеёюя]/gi).length; 
+//Метод match() возвращает получившиеся совпадения при сопоставлении строки с регулярным выражением.
+//gi - строчные и заглавные.
+return number_of_elements;
+};
+
+
+var Begin_regular = () =>
+{
+let My_string = document.getElementById("string").value;//чтение строки  
+document.getElementById("number_of_elements").innerHTML = (My_Number(My_string));
+};       
+
+       </script>
+    </body>
+</html>
+

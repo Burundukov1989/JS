@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Anketa_js</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <style>
+        #My_text {font-size: 20px;
+                  height: auto;
+                  border: solid orange 2px;
+                  display: inline-block;}
+       </style>     
+        
+    </head>
+    <body>
+        <div id="My_text">
+            
+        </div>
+           
+<script type="text/javascript">    
+    var name_1=prompt('Введите имя:',''); 
+    if (isNaN(name_1)=== false || name_1==='') {
+    do {name_1=prompt('Введите корректные данные:\n' + 'Введите имя:','');}
+    while (isNaN(name_1)=== false || name_1==='');} 
+  
+    var name_2=prompt('Введите отчество:','');
+    if (isNaN(name_2)=== false || name_1==='') {
+    do {name_2=prompt('Введите корректные данные:\n' + 'Введите отчество:','');}
+    while (isNaN(name_2)=== false || name_2==='');}  
+    
+    var name_3=prompt('Введите фамилию:','');
+    if (isNaN(name_3)=== false || name_3==='') {
+    do {name_3=prompt('Введите корректные данные:\n' + 'Введите фамилию:','');}
+    while (isNaN(name_3)=== false || name_3==='');}    
+
+    var age=prompt('Возраст в годах:','');
+    if (isNaN(age)=== true || age==='' || age<=0 || age>100) 
+    {do {age=prompt('Введите корректные данные:\n' + 'Введите возраст в годах:','');}
+    while (isNaN(age)=== true || age==='' || age<=0);}
+        
+    var gender=confirm('Ваш пол мужской?');
+   
+    if(gender === false) {
+        var gender_new='женский';}
+    else gender_new='мужской';
+
+    var pension=parseFloat(age);
+    if ((pension>60) && (gender_new='мужской'))
+    var pension_1='да';
+    else {if((pension>55) && (gender_new='женский'))
+        pension_1='да';
+    else  pension_1='нет';};
+    
+    document.getElementById('My_text').innerHTML=('Ваше ФИО: ' + name_1 + ' ' + name_2 + ' ' + name_3 + ';' + '<br>' +
+         'Ваш возраст в годах: ' + age + ';' + '<br>' +
+         'Ваш возраст в днях: ' + (365*pension) + ';' + '<br>' +
+         'Через 5 лет Вам будет: ' + (pension+5) + ';' + '<br>' +
+         'Ваш пол: ' + gender_new + ';' + '<br>' +
+         'Вы на пенсии: ' + pension_1 + '.');
+</script>
+    </body>
+</html>

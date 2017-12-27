@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=UTF-8> 
+    <title>drinks and dish</title>
+    <script src="TLocalStorage.js" type="text/javascript"> </script>  
+
+    <style>
+      input  {min-width: 300px;
+              min-height: 40px;
+              margin: 5px;}
+      textarea {min-width: 300px;
+                min-height: 100px;
+                margin: 5px;}
+    </style>
+</head>
+
+<body>
+
+    <div style="border: solid 2px; display: inline-block; background-color: lightgreen">
+        <input type="button" id="btn1" onclick="addDrinks()" value="Ввод информации о напитке"> <br>
+        <input type="button" id="btn2" onclick="getDrinks()" value="Получение информации о напитке"> <br>
+        <input type="button" id="btn3" onclick="delDrinks()" value="Удаление информации о напитке"> <br>
+        <input type="button" id="btn4" onclick="keyDrinks()" value="Перечень всех напитков"> <br>
+        <input type="button" id="btn5" onclick="ClearAll()" value="Стереть информацию"> <br>
+    
+    <textarea id=IContDrinks> </textarea>
+    </div>
+
+    <div style="border: solid 2px; display: inline-block; background-color: lightgreen">
+        <input type="button" id="btn6" onclick="addDish()" value="Ввод информации о блюде"> <br>
+        <input type="button" id="btn7" onclick="getDish()" value="Получение информации о блюде"> <br>
+        <input type="button" id="btn8" onclick="delDish()" value="Удаление информации о блюде"> <br>
+        <input type="button" id="btn9" onclick="keyDish()" value="Перечень всех блюд"> <br>
+        <input type="button" id="btn10" onclick="ClearAll()" value="Стереть информацию"> <br>
+    
+    <textarea id=IContDish> </textarea>
+    </div>    
+    
+    <script>
+       //проверка поддержки localStorage 
+      console.log(('localStorage' in window) && (window.localStorage!==null));
+      var DishType = "Блюдо горячее?",
+          DrinksType = "Напиток алкогольный?";
+               
+        function addDish() {
+            let name = prompt("Введите название блюда:"),
+                Request = (confirm("Блюдо горячее?") === true) ? 'Да' : 'Нет',
+                recipeRequest = prompt("Введите рецепт блюда:");
+                DishLocalStorage.addValue(name, Request, recipeRequest, DishType);
+        };
+        
+        function getDish() {
+            let name = prompt("Введите название блюда:"),
+                  
+                bet = DishLocalStorage.getValue(name, DishType);                
+            if (bet) {
+                DishinsertText("Название блюда: " + name + ";" + "\n Горячее: " + bet[DishType] + ";" + "\n Рецепт приготовления: " + bet['Рецепт'] + ".");
+            }
+            if (!bet) {DishinsertText("Рецепт блюда не найден"); };
+        };
+        function delDish() {
+            let name = prompt("Введите название блюда:"),
+                bet = DishLocalStorage.deleteValue(name, DishType);
+        
+            if (bet) {
+                DishinsertText("Блюдо " + name + " удалено из базы!");
+            }
+            if (!bet) { 
+                DishinsertText("Блюдо " + name + "  в базе не найден!");};
+        }
+        function keyDish() {
+        let NewValue = DishLocalStorage.getKeys("Блюдо горячее?");
+        console.log(NewValue);
+        if (NewValue)
+             DishinsertText(NewValue);
+        if (NewValue.length===0)
+             DishinsertText('Ничего не найдено!');    
+        };
+        
+        function DishinsertText(Text) 
+        {  
+        let contElem=document.getElementById('IContDish');
+        contElem.innerHTML=`${Text}`;
+        };
+                
+        
+        function ClearAll()
+        {
+        DrinkLocalStorage.DeleteAll();
+        };
+        
+                function addDrinks() {
+            let name = prompt("Введите название напитка:"),
+                Request = (confirm("Алкогольный напиток:") === true) ? 'Да' : 'Нет',
+                recipeRequest = prompt("Введите рецепт напитка:");
+                DrinkLocalStorage.addValue(name, Request, recipeRequest, DrinksType);
+        };
+        
+        function getDrinks() {
+            var name = prompt("Введите название напитка:"),
+                bet = DrinkLocalStorage.getValue(name, DrinksType);
+            if (bet) {
+                DrinksinsertText("Название напитка: " + name + ";" + "\n Алкогольный: " + bet[DrinksType] + ";" + "\n Рецепт приготовления: " + bet['Рецепт'] + ".");
+            }
+            if (!bet) { 
+                   DrinksinsertText("Рецепт напитка не найден"); };
+        };
+        function delDrinks() {
+            let name = prompt("Введите название напитка:"),
+                bet = DrinkLocalStorage.deleteValue(name, DrinksType);
+        
+            if (bet) {
+                
+                DrinksinsertText("Напиток " + name + " удален из базы!");
+            }
+            if (!bet) { 
+                    DrinksinsertText("Напиток " + name + " в базе не найден!");};
+        };
+        
+        function keyDrinks() {
+        let NewValue = DrinkLocalStorage.getKeys("Напиток алкогольный?");
+        if (NewValue)
+            DrinksinsertText(NewValue);
+        else DrinksinsertText('Ничего не найдено!');
+        };
+        
+        function DrinksinsertText(Text) 
+        {  
+        let contElem=document.getElementById('IContDrinks');
+        contElem.innerHTML=`${Text}`;
+        };
+        
+        
+
+    </script>
+</body>
+
+</html>

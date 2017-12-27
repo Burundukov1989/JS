@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>E1_VALID_FORM</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+        .TextInput {width: 200px;}
+         label {font-size: 18px;}
+    </style>    
+</head>
+
+<body>
+
+
+<div>Для внесения вашего сайта в каталог, заполните форму:</div>
+
+<form action='http://fe.it-academy.by/TestForm.php' method="POST" id='form1' target='_blank' name="formName">
+
+<div style="display: inline-block">
+  
+<label>Разработчики:</label>
+<br>
+<label>Название сайта:</label>
+<br>
+<label>URL сайта:</label>
+<br>
+<label>Дата запуска сайта:</label>
+<br>
+<label>Посетителей в сутки:</label>
+<br>
+<label>Email для связи:</label>
+<br>
+<label>Рубрика каталога:</label>
+<br>
+<label>Размещение: </label>
+<br>
+<label>Разрешить отзывы: </label>
+
+<br>
+<label>Описание сайта:   </label>
+<br>
+<textarea class="TextInput">Описание сайта</textarea> 
+<br>
+<input type='submit' value="Опубликовать">
+</div>    
+
+<div style="display: inline-block; position: absolute;" >
+    
+<input type='text' class="TextInput" value="Бурундуков А.О." name="Name"/>
+<br>
+<input type='text' class="TextInput"  value="название сайта" name="SiteName"/>
+<br>
+<input type='text' class="TextInput" value="https://www.tut.by" name="URLSite"/>
+<br>  
+<input type='date' class="TextInput" name="Date"/>
+<br>     
+<input type='number' class="TextInput" value="25" name="NumberOfVisitors"/>
+<br>  
+<input type='email' class="TextInput" value="Burundukov1989@mail.ru" name="EmailSite"/>
+<br>  
+    <select name="TypeOfSite">
+            <option value="Бытовая техника">Бытовая техника</option>
+            <option value="Здоровье">Здоровье</option>
+            <option value="Домашний уют">Домашний уют</option>
+    </select>
+<br>        
+    <input type='radio' name='advert9' value="бесплатное">бесплатное
+    <input type='radio' name='advert10' value="платное">платное
+    <input type='radio' name='advert11' value="VIP">VIP
+<br>     
+    <input type='checkbox' />
+<br>   
+</div>   
+    
+</form>
+
+
+<script>
+ 
+
+var form = document.getElementById("form1"); 
+
+var textarea = form.elements[0];
+var validateBtn = form.elements[1];
+var devField = form.elements[2];
+var nameSiteField = form.elements[3];
+var urlSiteField = form.elements[4];
+var startSite = form.elements[5];
+var dailyUsers = form.elements[6];
+var mail = form.elements[7];
+var catPart = form.elements[8];
+var radio1 = form.elements[9];
+var radio2 = form.elements[10];
+var radio3 = form.elements[11];
+var checkbox = form.elements[12];
+
+var removeValidation = function () {
+    var errors = form.querySelectorAll('.error');
+    for (let i = 0; i < errors.length; i++) {
+        errors[i].remove();
+    }
+};
+
+
+var emptyFieldCheck = function () {
+    for (let i=0, k = form.elements.length; i < k; i++) { 
+//        console.log(i);
+//        console.log(form.elements[i]);
+        if (!form.elements[i].value) {
+        form.elements[i].focus();
+        form.elements[i].style.color = 'red';   
+        form.elements[i].value = 'Поле должно быть заполнено';
+        }
+    }
+};
+var checkEmailField = function () {
+    var reg = /^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/;
+    var checkmail = mail.value;
+//    console.log(checkmail);
+    if (reg.test(checkmail)) {
+        console.log("Введите корректный адрес электронной почты");
+        mail.focus();
+    }
+    else (console.log('Введен корректный адрес'));
+};
+var checkboxField = function () {
+    if (checkbox.checked) {
+        console.log('Чекбокс выбран');
+    }
+};
+function catCheckField() {
+    var sel = catPart.selectedIndex;
+    var options = catPart.options;
+    console.log('выбрана опция ' + options[sel].text);
+}
+function checkRadio () {
+     for (let i = 9; i <= 11; i++) {
+      if (form.elements[i].checked)
+       {console.log ('Выбран' + i + 'элемент');};
+            }
+}
+
+</script>
+
+</body>
+
+</html>
+
+<!--
+form.addEventListener('submit', function(event) 
+{
+    event.preventDefault();
+    
+    removeValidation();
+    emptyFieldCheck();
+    checkEmailField();
+    checkboxField();
+    checkRadio();
+    catCheckField();
+});
+-->

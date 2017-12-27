@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>MOOD</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .text {
+            font-size: 10px;
+            line-height: 25px;
+            min-width: 5vw;
+            min-height: 25px;
+            height: auto;
+            border: solid red 2px;
+            display: inline-block;
+            margin-top: 10px;}     
+
+        #number_of_elements {
+            display: inline-block;
+            color: red;}        
+
+        #main_button {width: 290px;} 
+                   
+    </style>
+</head>
+
+<body>
+    <form>
+        <input type="button" id="main_button" value="Сортировка цветов" onclick="Begin()"> <br>
+    </form>
+    <span> Количество цветов: </span>
+    <div id="number_of_elements"> </div> <br>
+    <div id="All_array" class='text'> </div> <br>
+    <div id="next_array" class='text'> </div>
+
+    <script>
+        "use strict";
+        let Begin = () => {
+            let randomDiap = (min, max) => {
+                return Math.floor(Math.random() * (max - min + 1)) + min;};
+            
+            var colors = ['красный', 'оранжевый', 'желтый', 'зеленый', 'голубой', 'синий', 'фиолетовый'];
+            document.getElementById("All_array").innerHTML = (`Исходные цвета: &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp ${colors}`);
+            document.getElementById("number_of_elements").innerHTML = (`${colors.length}`);
+            let used = {};
+            for (let i = 0; Object.keys(used).length < colors.length; i++) {
+                let n = randomDiap(0, colors.length - 1);
+                let colorName = colors[n]; // очередное значение
+                if (colorName in used) // встречалось ли оно?
+                    continue; // если да - всё, берём следующее
+                used[colorName] = true;}; // если нет - запоминаем, что это значение уже встречалось                   
+            document.getElementById("next_array").innerHTML = (`Цвета в случайном порядке: ${Object.keys(used)}`);
+            //Возвращает массив, содержащий имена всех собственных перечислимых свойств переданного объекта.  
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>G4_moving_rect</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>    
+ <svg width="600" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+<rect x=20 y=40 width=30 height=20 fill=yellow stroke=green stroke-width=2 />
+
+<path id='PPP1' d='M 200 20 q 80 -50, 300 70' stroke=red fill=none />
+
+    <!-- у rect НЕ задаём атрибуты x и y, иначе прямоугольник сместится относительно кривой -->
+<rect width=30 height=20 fill=yellow stroke=green stroke-width=2>
+        <animateMotion dur=3s repeatCount=indefinite>
+            <mpath xlink:href="#PPP1"/>
+        </animateMotion>
+</rect>
+
+    <path id='PPP2' d='M 200 60 q 80 -50, 300 70' stroke=red fill=none />
+
+    <!-- кривая Бузье  -->
+    <path id='PPP3' d='M 200 250 q 80 50, 300 -70' stroke=red fill=none />
+    
+    <!-- у rect НЕ задаём атрибуты x и y, иначе прямоугольник сместится относительно кривой -->
+    <rect width=30 height=20 fill=yellow stroke=green stroke-width=2 transform="scale(-1, 1)">
+        <animateMotion dur=3s repeatCount=indefinite rotate=auto>
+            <mpath xlink:href="#PPP2"/>
+        </animateMotion>        
+    </rect>
+    
+    <rect width=30 height=20 fill=yellow stroke=green stroke-width=2>
+        <animateMotion dur=3s repeatCount=indefinite rotate=auto-reverse>
+            <mpath xlink:href="#PPP3"/>
+        </animateMotion>
+    </rect>
+</svg> 
+    </body>
+</html>

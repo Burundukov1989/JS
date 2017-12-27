@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>TENNIS_SVG</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <style>
+             #mainSVG {position: absolute; 
+                       top: 70px;  }
+         </style>   
+    </head>
+    <body>
+             <form>
+	 <input type="button" id="main_button" value="старт!" onclick="Begin()"> <br>
+       </form> 
+        <div >       
+<span id='Left' style='position: absolute; left: 370px'> 0 </span> 
+<span id='Right' style='position: absolute; left: 400px'> 0 </span> 
+        </div>
+<svg id='mainSVG' width=800px height=500px >
+<rect x=0 y=0 width=800px height=500px stroke='black' fill='lightgreen'/>
+<rect id='left_rect' x=2 y=2 width=20px height=125px stroke='black' fill='grey'/>
+<rect id='right_rect' x=778 y=2 width=20px height=125px stroke='black' fill='lightgrey'/>
+<circle id='IBall' r=15 cx=400 cy=250 stroke='black' fill='orange'>
+</svg>
+
+
+
+
+
+<script>
+  
+  
+    
+var counterLeft = new createCounterLeft();
+var counterRight = new createCounterRight();
+var leftRect=document.getElementById('left_rect');
+var rightRect=document.getElementById('right_rect');
+var timer; 
+
+addEventListener('keydown', moveDownLeft);//перехват ctrl
+addEventListener('keydown', moveUpLeft);//перехват shift
+
+addEventListener('keydown', moveDownRight);//перехват вниз
+addEventListener('keydown', moveUpRight);//перехват вверх
+
+function moveDownLeft(event)
+{
+if (event.keyCode === 17) //нажимаем ctrl
+{
+counterLeft.inc();//счетчик 
+leftRect.setAttribute('y', counterLeft.getValue());
+};
+};
+
+
+function moveUpLeft(event)
+{
+if (event.keyCode === 16) //нажимаем shift
+{
+counterLeft.dec();//счетчик 
+leftRect.setAttribute('y', counterLeft.getValue());
+};
+};
+
+function moveDownRight(event)
+{
+if (event.keyCode === 40) //нажимаем вниз
+{
+counterRight.inc();//счетчик 
+rightRect.setAttribute('y', counterRight.getValue());
+};
+};
+
+
+function moveUpRight(event)
+{
+if (event.keyCode === 38) //нажимаем вверх
+{
+counterRight.dec();//счетчик 
+rightRect.setAttribute('y', counterRight.getValue());
+};
+};
+
+
+
+//счетчик перемещения левой ракетки
+
+function createCounterLeft(){
+let Count = 2;
+createCounterLeft.prototype.inc = function () {
+          Count+=6; 
+if(Count > 373){Count = 373;}
+};
+createCounterLeft.prototype.dec = function () {
+           Count-=6;  
+if(Count < 2){Count = 2;}
+};
+
+createCounterLeft.prototype.getValue = function () {  
+return Count;
+    };
+              };
+
+//счетчик перемещения правой ракетки  
+            
+function createCounterRight(){
+let Count = 2;
+createCounterRight.prototype.inc = function () {
+          Count+=10; 
+if(Count > 373){Count = 373;}
+};
+createCounterRight.prototype.dec = function () {
+           Count-=10;  
+if(Count < 2){Count = 2;}
+};
+
+createCounterRight.prototype.getValue = function () {      
+return Count;
+    };
+              };
+var i = 0, j = 0;
+
+function Begin() {
+//характеристики мяча в виде хэша, ключ update в виде функции перемещения мяча 
+//speedX, speedY - приращение скорости по оси X и Y
+    var ballH={
+        posX : 400,
+        posY : 250,
+        speedX : Math.floor(Math.random()*(5 - 12 + 1)) + 3,
+        speedY : Math.floor(Math.random()*(7 - 3 + 1)) + 3,
+        radius: 15,
+       
+        update : function() {
+            var ballElem=document.getElementById('IBall');
+            ballElem.setAttribute('cx', this.posX+"px");
+            ballElem.setAttribute('cy', this.posY+"px");
+        }
+    };
+
+    var areaH={
+        width : 800,
+        height : 500
+    };
+
+        // плавное движение 
+timer = setInterval(tick,25);
+
+
+    function tick() {
+
+        ballH.posX+=ballH.speedX;
+        // вылетел ли мяч правее стены?
+        if ( ballH.posX+ballH.radius>areaH.width ) {
+            j=j+1;
+document.getElementById('Right').innerHTML=(j);            
+        clearTimeout(timer);
+//            ballH.speedX=-ballH.speedX;
+//            ballH.posX=areaH.width-ballH.radius;
+        }
+        // вылетел ли мяч левее стены?
+        if ( ballH.posX-ballH.radius < 0 ) { 
+                        i=i+1;
+document.getElementById('Left').innerHTML=(i);   
+        clearTimeout(timer);
+//           ballH.speedX=-ballH.speedX;
+//           ballH.posX=ballH.radius;
+        }
+
+
+        ballH.posY+=ballH.speedY;
+        // вылетел ли мяч ниже пола?
+        if ( ballH.posY > areaH.height - ballH.radius) {
+            ballH.speedY=-ballH.speedY;
+            ballH.posY=areaH.height-ballH.radius;
+        }
+        // вылетел ли мяч выше потолка?
+        if ( ballH.posY - ballH.radius < 0) {
+            ballH.speedY=-ballH.speedY;
+            ballH.posY=ballH.radius;
+        }
+
+        // попал ли мяч на правую ракетку        
+         if (ballH.posY+ballH.radius>counterRight.getValue() && ballH.posY+ballH.radius < (counterRight.getValue() + 125) && ballH.posX+ballH.radius > 778) 
+        {
+            ballH.speedX=-ballH.speedX;
+            ballH.posX=areaH.width-ballH.radius-25;
+        console.log('мяч попал на правую ракетку'); 
+        }          
+
+         if (ballH.posY+ballH.radius>counterLeft.getValue() && ballH.posY+ballH.radius < (counterLeft.getValue() + 125) && ballH.posX-ballH.radius < 25) 
+        {
+            ballH.speedX=-ballH.speedX;
+            ballH.posX=ballH.radius + 25;
+            console.log('мяч попал на левую ракетку'); 
+        } 
+
+
+        ballH.update();
+    }
+
+    ballH.update();
+
+
+}
+
+
+</script>  
+
+
+    </body>
+</html>
