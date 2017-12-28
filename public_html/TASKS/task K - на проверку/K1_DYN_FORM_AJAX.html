@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+
+-->
+<html>
+    <head>
+        <title>DYN_FORM_AJAX</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body id="main">
+<input type=button onclick='testLoadScript()' value='загрузить и выполнить скрипт'>
+
+<script src='http://fe.it-academy.by/JQ/jquery.js'></script>
+
+<script>
+
+    "use strict";
+
+    function testLoadScript() {
+        $.ajax("DYN_FORM_AJAX.js",
+            { type:'GET', dataType:'script', success:dataLoaded, error:errorHandler }
+        );
+    }
+
+    function dataLoaded(data) {
+        console.log('загруженные через AJAX данные:');
+        console.log(data);
+    }
+
+    function errorHandler(jqXHR,statusStr,errorStr) {
+        alert(statusStr+' '+errorStr);
+    }
+
+</script>
+    </body>
+</html>
