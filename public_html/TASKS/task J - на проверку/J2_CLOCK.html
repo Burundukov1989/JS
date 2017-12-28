@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>J2_CLOCK</title>
+    <style>
+
+    </style>    
+</head>
+<body>
+    
+<script>
+    'use strict';
+    class ApplicationView { // Shell
+        constructor(element) {
+            this.element = element;
+        }
+
+        render() {
+var div = this.div1 = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.left = '0px';
+                div.style.top = '0px'; 
+                
+            this.element.appendChild(div);
+            var btn = document.createElement('button');
+            btn.textContent = "Stop";
+            btn.className = "stop";
+            div.appendChild(btn);
+            btn = document.createElement('button');
+			btn.style.margin = '5px';
+            btn.textContent = "Start";
+            btn.className = "start";
+            div.appendChild(btn);
+            
+            var TextTime = document.createElement('span');
+            TextTime.innerHTML ='Астана (GMT+6)';
+            div.appendChild(TextTime);
+
+var div = this.div2 = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.left = '400px';
+                div.style.top = '0px'; 
+            
+
+            this.element.appendChild(div);
+            var btn = document.createElement('button');
+            btn.textContent = "Stop";
+            btn.className = "stop";
+            div.appendChild(btn);
+            btn = document.createElement('button');
+			btn.style.margin = '5px';
+            btn.textContent = "Start";
+            btn.className = "start";
+            div.appendChild(btn);
+
+            var TextTime = document.createElement('span');
+            TextTime.innerHTML ='Астрахань (GMT+4)';
+            div.appendChild(TextTime);
+            
+var div = this.div3 = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.left = '800px';
+                div.style.top = '0px'; 
+
+            this.element.appendChild(div);
+            var btn = document.createElement('button');
+            btn.textContent = "Stop";
+            btn.className = "stop";
+            div.appendChild(btn);
+            btn = document.createElement('button');
+			btn.style.margin = '5px';
+            btn.textContent = "Start";
+            btn.className = "start";
+            div.appendChild(btn);
+            
+            var TextTime = document.createElement('span');
+            TextTime.innerHTML ='Минск (GMT+3)';
+            div.appendChild(TextTime);
+			
+var div = this.div4 = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.left = '0px';
+                div.style.top = '400px'; 
+
+            this.element.appendChild(div);
+            var btn = document.createElement('button');
+            btn.textContent = "Stop";
+            btn.className = "stop";
+            div.appendChild(btn);
+            btn = document.createElement('button');
+	    btn.style.margin = '5px';
+            btn.textContent = "Start";
+            btn.className = "start";
+            div.appendChild(btn);
+
+            var TextTime = document.createElement('span');
+            TextTime.innerHTML ='Варшава (GMT+1)';
+            div.appendChild(TextTime);
+            
+var div = this.div5 = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.left = '400px';
+                div.style.top = '400px'; 
+
+            this.element.appendChild(div);
+            var btn = document.createElement('button');
+            btn.textContent = "Stop";
+            btn.className = "stop";
+            div.appendChild(btn);
+            btn = document.createElement('button');
+			btn.style.margin = '5px';
+            btn.textContent = "Start";
+            btn.className = "start";
+            div.appendChild(btn);
+
+            var TextTime = document.createElement('span');
+            TextTime.innerHTML ='Кабо-Верде (GMT-1)';
+            div.appendChild(TextTime);
+            
+var div = this.div6 = document.createElement('div');
+                div.style.position = 'absolute';
+                div.style.left = '800px';
+                div.style.top = '400px'; 
+
+            this.element.appendChild(div);
+            var btn = document.createElement('button');
+            btn.textContent = "Stop";
+            btn.className = "stop";
+            div.appendChild(btn);
+            btn = document.createElement('button');
+			btn.style.margin = '5px';
+            btn.textContent = "Start";
+            btn.className = "start";
+            div.appendChild(btn);
+            
+            var TextTime = document.createElement('span');
+            TextTime.innerHTML ='Буэнос-Айрес (GMT-3)';
+            div.appendChild(TextTime);
+        }
+    }
+
+    class ApplicationController {
+        constructor(applicationView) {
+            this.applicationView = applicationView;
+            applicationView.render();
+            var pubSubService = window.pubSubService = new PubSubService();
+            new ClockController(
+                new ClockModel('3', pubSubService, "GMT+3"),
+                new ClockView(applicationView.div1),
+                pubSubService);
+            new ClockController(
+                new ClockModel('1', pubSubService, "GMT+1"),
+                new ClockView(applicationView.div2),
+                pubSubService);
+            new ClockController(
+                new ClockModel('0', pubSubService, "GMT+0"),
+                new ClockView(applicationView.div3),
+                pubSubService);
+            new ClockController(
+                new ClockModel('-2', pubSubService, "GMT-2"),
+                new ClockView(applicationView.div4),
+                pubSubService);
+            new ClockController(
+                new ClockModel('-4', pubSubService, "GMT-4"),
+                new ClockView(applicationView.div5),
+                pubSubService);
+            new ClockController(
+                new ClockModel('-6', pubSubService, "GMT-5"),
+                new ClockView(applicationView.div6),
+                pubSubService);				
+				
+        }
+    }
+
+    class ClockView {
+        constructor (element) {
+            this.element = element;
+        }
+
+        render() {
+            //циферблат
+            var base = document.createElement('div');
+            this.element.appendChild(base);
+            base.style = 'position: relative; width: 300px; height: 300px; background: orange; border-radius: 50%; margin: 10px';
+
+            //центр циферблата
+            var baseCenterX = parseInt(getComputedStyle(base).width) / 2;
+            var baseCenterY = parseInt(getComputedStyle(base).height) / 2;
+
+            //цифры
+
+            var numSize = baseCenterX / 3.5;
+            var fontSize = baseCenterX / 5;
+            var numSignCorrection = numSize / 2;
+
+            for (var i = 1; i <= 12; i++) {
+                var num = document.createElement('div');
+                base.appendChild(num);
+
+                var angle = Math.PI / 6 * (9 - i);
+
+                num.style = 'position: absolute; background: green; border-radius: 50%; display: ' +
+                    'flex; align-items: center; justify-content: center; color: white; font-family: arial;';
+                num.style.width = numSize + 'px';
+                num.style.height = numSize + 'px';
+                num.style.fontSize = fontSize + 'px';
+                num.style.left = baseCenterX - Math.cos(angle) * baseCenterX * 0.8 - numSignCorrection + 'px';
+                num.style.top = baseCenterY + Math.sin(angle) * baseCenterY * 0.8 - numSignCorrection + 'px';
+                num.innerHTML = '<span>' + i + '</span>';
+            }
+
+            //стрелка час
+            var hour = this.hour = document.createElement('div');
+            base.appendChild(hour);
+            hour.style = 'position: absolute; height: 10px; background: black; border-radius: 5px;';
+            hour.style.width = baseCenterX / 2.5 + 'px';
+            hour.style.left = baseCenterX - 10 + 'px';
+            hour.style.top = baseCenterY - 5 + 'px';
+            hour.style.transformOrigin = '10px';
+
+
+            //стрелка минуты
+            var min = this.min = document.createElement('div');
+            base.appendChild(min);
+            min.style = 'position: absolute; height: 5px; background: black; border-radius: 2px;';
+            min.style.width = baseCenterX / 1.6 + 'px';
+            min.style.left = baseCenterX - 15 + 'px';
+            min.style.top = baseCenterY - 2 + 'px';
+            min.style.transformOrigin = '15px';
+
+
+            //стрелка секунды
+            var sec = this.sec = document.createElement('div');
+            base.appendChild(sec);
+            sec.style = 'position: absolute; height: 3px; background: black; border-radius: 2px;';
+            sec.style.width = baseCenterX / 1.2 + 'px';
+            sec.style.left = baseCenterX - 20 + 'px';
+            sec.style.top = baseCenterY - 1 + 'px';
+            sec.style.transformOrigin = '20px';
+
+            //электр часы
+            var electronicWatch = this.electronicWatch = document.createElement('div');
+            base.appendChild(electronicWatch);
+            electronicWatch.style = 'position: absolute; top: 25%; width: 100%; text-align: center; font-family: arial; font-size: 2em' ;
+        }
+
+        update(model) {
+            this.hour.style.transform = 'rotate(' + model.rotateHour + 'deg)';
+            this.min.style.transform = 'rotate(' + model.rotateMin + 'deg)';
+            this.sec.style.transform = 'rotate(' + model.rotateSec + 'deg)';
+            this.electronicWatch.innerHTML = model.electronicWatchText;
+        }
+    }
+
+    class ClockModel {
+        constructor(timeZone, pubSubService, modelName) {
+            this.timeZone = +timeZone;
+            this.pubSubService = pubSubService;
+            this.modelName = modelName;
+
+            //часы
+            this.time = null;
+            this.seconds = null;
+            this.minutes = null;
+            this.hours = null;
+            this.rotateSec = null;
+            this.rotateMin = null;
+            this.rotateHour = null;
+            this.timeout = null;
+        }
+
+        clock() {
+            this.time = new Date(Date.now()); // TODO: использовать this.timeZone !
+            this.seconds = this.time.getSeconds();
+            this.minutes = this.time.getMinutes();
+            this.hours = this.time.getHours() + this.timeZone;
+            this.rotateSec = this.seconds * 6 - 90;
+            this.rotateMin = this.minutes * 6 - 90 + this.seconds / 12;
+            this.rotateHour = this.hours * 30 - 90 + this.minutes / 2 ;
+
+            function addZero(t) {
+                if (t < 10){
+                    t = '0' + t;
+                }
+                return t;
+            }
+            this.minutes = addZero(this.minutes);
+            this.seconds = addZero(this.seconds);
+            this.electronicWatchText = this.hours + ':' + this.minutes + ':' + this.seconds;
+
+            setTimeout(this.clock.bind(this), 1000);
+
+            this.pubSubService.pub(this.modelName + 'updated');
+        }
+    }
+
+    class PubSubService {
+        constructor() {
+            this.listeners = {};
+        }
+
+        sub(eventName, listener) {
+            if (typeof (listener) !== 'function') throw "Only functions can be listerners";
+
+            if (eventName in this.listeners) {
+                if (this.listeners[eventName].indexOf(listener) === -1) {
+                    this.listeners[eventName].push(listener);
+                }
+            }
+            else {
+                this.listeners[eventName] = [listener];
+            }
+
+
+        }
+
+        pub(eventName) {
+            let arrayOfListeners = this.listeners[eventName];
+            if (arrayOfListeners) {
+                for (let listener of arrayOfListeners) {
+                    listener();
+                }
+            }
+        }
+
+        delete(eventName, listener) {
+            let arrayOfListeners = this.listeners[eventName];
+            if (arrayOfListeners) {
+                const index = arrayOfListeners.indexOf(listener);
+                if (index > -1) {
+                    arrayOfListeners.splice(index, 1);
+                }
+            }
+        }
+    }
+
+    class ClockController {
+        constructor(model, view, pubSubService) {
+            this.model = model;
+            this.view = view;
+            this.view.render();
+
+            const listener = () => this.view.update(this.model);
+
+            pubSubService.sub(this.model.modelName + 'updated', listener);
+
+            var btn = view.element.querySelector('.stop');
+            if (btn) {
+                btn.onclick = e => pubSubService.delete(this.model.modelName + 'updated', listener);
+            }
+            btn = view.element.querySelector('.start');
+            if (btn) {
+                btn.onclick = e => pubSubService.sub(this.model.modelName + 'updated', listener);
+                pubSubService.sub(this.model.modelName + 'updated', () => console.log("Второй обработчик вызван"));
+            }
+
+            this.model.clock();
+        }
+    }
+
+    new ApplicationController(new ApplicationView(document.body));
+
+</script>
+</body>
+</html>
