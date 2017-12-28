@@ -6,15 +6,12 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>DYN_FORM</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body id="main">
-        <form id='one_form'> 
-  
-  
-        </form>
+
         <script type="text/javascript"> 
 var formDef1=//массив из хэшей
 [
@@ -137,25 +134,29 @@ if (Elements[elements_of_DOM] === 'number')
     var DYN_input_1=document.createElement('input');
         DYN_input_1.type = 'radio';
         DYN_input_1.name = 'payment';
+
     var DYN_input_2=document.createElement('input');
         DYN_input_2.type = 'radio';
         DYN_input_2.name = 'payment';
+
     var DYN_input_3=document.createElement('input');
         DYN_input_3.type = 'radio';
         DYN_input_3.name = 'payment';
-
-             var TextElement_1=document.createTextNode('бесплатное'); 
-             var TextElement_2=document.createTextNode('платное'); 
-             var TextElement_3=document.createTextNode('VIP'); 
-
- //            DYN_input_1.appendChild(TextElement_1);
- //            DYN_input_2.appendChild(TextElement_2);
- //            DYN_input_3.appendChild(TextElement_3);
-
-        blockElement.appendChild(DYN_input_1);//создаем тег input(type 'radio') 
+       
+    var textradio1 = document.createElement('span');
+        textradio1.innerHTML ='бесплатное';
+        blockElement.appendChild(textradio1);
+        blockElement.appendChild(DYN_input_1);//создаем тег input(type 'radio')
+        
+    var textradio2 = document.createElement('span');
+        textradio2.innerHTML ='платное';
+        blockElement.appendChild(textradio2);              
         blockElement.appendChild(DYN_input_2);//создаем тег input(type 'radio')
-        blockElement.appendChild(DYN_input_3);//создаем тег input(type 'radio')
 
+    var textradio3 = document.createElement('span');
+        textradio3.innerHTML ='VIP';
+        blockElement.appendChild(textradio3);                     
+        blockElement.appendChild(DYN_input_3);//создаем тег input(type 'radio')
 
         blockElement.appendChild(document.createElement('br'));//переход на новую строку
 };
