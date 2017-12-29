@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CLOCK_SVG</title>
+    <style>
+        #circl { stroke-width: 1px; stroke: #FCCA66; fill: #FCCA66;}
+        #hour, #min, #sec { stroke-width: 1px; fill: black; stroke: black; stroke-linejoin: round }
+        #sec { stroke: #000; }
+        #elem { width:50%; margin:0 auto; }
+        .number{ font-size: 0.3em; fill: #000}
+    </style>
+</head>
+<body>
+    <div id="elem">
+    <svg id="clock" viewBox="0 0 100 100">
+        <circle id="circl" cx="50" cy="50" r="45"/>
+        <g></g>    
+        <rect id="hour" x="48.5" y="25" width="2" height="30"/>
+        <rect id="min" x="49" y="15" width="1" height="40"/>
+        <line id="sec" x1="50" y1="50" x2="50" y2="10"/>
+
+    </svg>
+    </div>
+
+    <script>
+                  "use strict"; 
+      
+        setInterval(function() {
+
+            function time(elemClock, deg) {
+            elemClock.setAttribute('transform', 'rotate('+ deg +' 50 50)');
+            }
+
+            var date = new Date();
+
+            time(sec, 6*date.getSeconds()); 
+            time(min, 6*date.getMinutes());
+            time(hour, 30*(date.getHours()%12) + date.getMinutes()/2);
+
+            }, 1000);
+            
+            
+            var ciratr = document.querySelector('svg #circl');
+            var r = +ciratr.attributes[3].value - 10 ;
+            for (var i = 0; i < 12; i++) {
+                var g = document.querySelector('g');
+                var arc = (i * 30) * Math.PI / 180;
+                var circle=document.createElementNS("http://www.w3.org/2000/svg",'circle');                
+                
+                circle.setAttribute('r','5');
+                circle.setAttribute("fill","green");
+                circle.setAttribute('cy', r - r * Math.cos(arc)+15);
+                circle.setAttribute('cx', r + r * Math.sin(arc)+15);
+                g.appendChild(circle);
+            }
+            for (var i = 1; i < 13; i++) {
+                var g = document.querySelector('g');
+                var arc = (i * 30) * Math.PI / 180;//радианы
+                var txt=document.createElementNS("http://www.w3.org/2000/svg",'text');
+                txt.setAttribute('y', r - r * Math.cos(arc)+17);
+                txt.setAttribute('x', r + r * Math.sin(arc)+15);
+                txt.setAttribute('text-anchor', 'middle');
+                txt.style.fill = "black";
+                txt.style.fontSize = '5';
+                txt.textContent= +i;
+                g.appendChild(txt);
+                
+                }
+    </script>
+</body>
+</html>
