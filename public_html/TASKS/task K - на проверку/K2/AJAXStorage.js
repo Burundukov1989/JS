@@ -55,6 +55,7 @@
 this.storeInfo = function(name, Request, recipeRequest)  
      {
 console.log('сработало storeInfo!');
+console.log(name);
     $.ajax( {
             url : ajaxHandlerScript, 
            type : 'POST', 
