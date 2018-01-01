@@ -117,7 +117,7 @@ this.restoreInfo = function(name) {
 };
 
 //перезаписываем страницу
-readReady = function(callresult) {
+function readReady(callresult) {
     if ( callresult.error!==undefined )
     { alert(callresult.error);
         
