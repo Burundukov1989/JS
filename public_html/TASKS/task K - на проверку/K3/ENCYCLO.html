@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Энциклопедия</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <style>
+           
+            #ISelectedCourse1 {font-size: 30px;}
+            
+            #ISelectedCourse2 {text-align: left;
+                               width: 30vw;}
+            span {position: absolute;
+                  top: 10vh;
+                  left:35vw; 
+                  font-size: 30px;}
+        </style>    
+    </head>
+    <body style="background-color: cornsilk;">
+        <div id="IPage" style="text-align: center"></div>
+<script>
+    
+
+  "use strict";
+var ajaxHandlerScript="http://fe.it-academy.by/TestAjax2.php";
+var Description, Name;
+var sortirovkaName=[];          
+var sortirovkaId=[];
+var SPAState={};
+
+//получить список курсов
+
+  // в закладке УРЛа будем хранить разделённые подчёркиваниями слова
+  // #Main - главная
+  // #Content -отобразить фото 55
+  // #About - о нас
+
+  // отслеживаем изменение закладки в УРЛе
+  // оно происходит при любом виде навигации
+  // в т.ч. при нажатии кнопок браузера ВПЕРЁД/НАЗАД
+  window.onhashchange=switchToStateFromURLHash;
+
+  // текущее состояние приложения
+  // это Model из MVC
+
+
+  // фотографии, которые можно просмотреть
+//  var photos={
+//    1 : { image:"Hilu3.jpg", comment:"собака Шарик" },//
+//    2 : { image:"Retriever3.jpg", comment:"собака Барбос" }
+//  };
+
+  // вызывается при изменении закладки УРЛа
+  // а также при первом открытии страницы
+  // читает новое состояние приложения из закладки УРЛа
+  // и обновляет ВСЮ вариабельную часть веб-страницы
+  // соответственно этому состоянию
+  // это упрощённая реализация РОУТИНГА - автоматического выполнения нужных
+  // частей кода в зависимости от формы URLа
+  // "роутинг" и есть "контроллер" из MVC - управление приложением через URL
+  function switchToStateFromURLHash() {
+    var URLHash=window.location.hash;
+    console.log(URLHash);
+    // убираем из закладки УРЛа решётку
+    // (по-хорошему надо ещё убирать восклицательный знак, если есть)
+    var stateStr=URLHash.substr(1);
+
+    if ( stateStr!=="" ) // если закладка непустая, читаем из неё состояние и отображаем
+    {SPAState={pagename:stateStr};}   
+    
+    else  SPAState={pagename:'Main_'};// иначе показываем главную страницу
+
+    // обновляем вариабельную часть страницы под текущее состояние
+    // это реализация View из MVC - отображение состояния модели в HTML-код
+    var pageHTML = '';    
+        
+    switch ( SPAState.pagename ) {
+//содержание первой стр.        
+      case 'Main_':
+    pageHTML+='<h1 style="text-align: center">Энциклопедия</h1>';      
+    pageHTML+='<a href="javascript://" onclick="switchToContentPage()"> Ссылка <a>';
+        break;
+//содержание второй стр.            
+      case 'Content_':
+    pageHTML+='<h1 style="text-align: center;">Оглавление</h1>';
+    ViewContent();    
+    pageHTML+='<div id="ISelectedCourse1" style="text-align: left"></h1>';
+        break;
+//содержание третьей стр.            
+      case 'About_':
+    pageHTML+='<h1 style="position: absolute; left:35vw; width: 60vw;" id="CourseName"></h1>';         
+    ViewName();  
+    pageHTML+='<span style="text-align: left" id="DescriptionContent"></span>';
+    ViewDescription();
+    pageHTML+='<div id="ISelectedCourse2"></h1>';
+    pageHTML+=RepeatViewContent();
+        break;
+    }
+   document.getElementById('IPage').innerHTML = pageHTML;
+
+  }
+
+  // устанавливает в закладке УРЛа новое состояние приложения
+  // и затем устанавливает+отображает это состояние
+  function switchToState(newState) {
+    // устанавливаем закладку УРЛа
+    // нужно для правильной работы кнопок навигации браузера
+    // (т.к. записывается новый элемент истории просмотренных страниц)
+    // и для возможности передачи УРЛа другим лицам
+    var stateStr=newState.pagename;  
+        stateStr+="_";
+    location.hash=stateStr;
+    // АВТОМАТИЧЕСКИ вызовется switchToStateFromURLHash()
+    // т.к. закладка УРЛа изменилась (ЕСЛИ она действительно изменилась)
+  }
+
+  function switchToMainPage() {
+    switchToState( { pagename:'Main' } );
+    console.log('сработала 1 стр.');
+  }
+
+  function switchToContentPage() {
+    switchToState( { pagename:'Content' } );
+    console.log('сработала 2 стр.');
+  }
+
+  function switchToAboutPage(selectedCourseId) {
+    switchToState( { pagename:'About' } );    
+    Name = selectedCourseId; 
+    console.log('сработала 3 стр.');
+    console.log('объявление номера курса Name='+Name+' для отображения на третьей вкладке');     
+  };
+
+// переключаемся в состояние, которое сейчас прописано в закладке УРЛ
+  switchToStateFromURLHash();
+  
+  
+  
+function PROBA()  
+{  var str="<h1>ПРОБА</h1>";
+    return str;
+};
+  
+  
+
+//показ списка функций на 3 стр.
+function RepeatViewContent(){ 
+ var optionsStr='';    
+    for (let x=0; x<sortirovkaName.length; x++)           
+        {          
+optionsStr+='<br>' + '-' + '<a href="javascript://" onclick=switchToAboutPage('+sortirovkaId[x]+')>'+sortirovkaName[x]+'</a>';             
+        };    
+   return optionsStr;     
+};
+    
+// показать перечень курсов на второй странице    
+ function ViewContent()    {
+// отправить запрос на весь список
+    $.ajax(ajaxHandlerScript, {
+        type: 'GET',
+        dataType: 'json',
+        data: { func:'COURSES_JSON' },
+        success: сoursesListReady,
+        error: errorHandler
+    });   
+    };    
+
+//запись списка курсов
+ function сoursesListReady(data) {
+//  console.log(data);     
+   
+        var courses=data;
+   //  course.name - имя курса course.id название=цифра             
+        for (let c=0; c<courses.length; c++) 
+        { 
+          sortirovkaName[c]=courses[c].name;         
+        };
+          sortirovkaName=sortirovkaName.sort();         
+          
+        for (let z=0; z<courses.length; z++)           
+        {
+            for (let y=0; y<courses.length; y++) 
+            {
+                if (sortirovkaName[z] === courses[y].name)
+                {              
+             sortirovkaId[z]=courses[y].id;
+                };
+            };
+        }; 
+   // перечень курсов и их id в алфавитном порядке
+   //       console.log(sortirovkaName);
+   //       console.log(sortirovkaId); 
+    var optionsStr="";
+    for (let x=0; x<courses.length; x++)           
+        {
+   // при вызове функции передается номер (id) курса и переход на третью стр.          
+   optionsStr+='<br>' + '-' + '<a href="javascript://" onclick=switchToAboutPage('+sortirovkaId[x]+')>'+sortirovkaName[x]+'</a>';             
+        };  
+document.getElementById('ISelectedCourse1').innerHTML= optionsStr; 
+    };    
+
+//показать имя курса на третьей стр.    
+ function ViewName()    {
+// отправить запрос на весь список
+    $.ajax(ajaxHandlerScript, {
+        type: 'GET',
+        dataType: 'json',
+        data: { func:'COURSES_JSON' },
+        success: сoursesNameReady,
+        error: errorHandler
+    });    
+    };  
+
+//запись имени курса
+ function сoursesNameReady(data) {
+//console.log('использование имени курса Name='+Name+' для отображения на третьей вкладке');
+//console.log(typeof(Name));
+//console.log(data);
+var courses=data;
+var optionsStr="";
+
+for ( var c=0; c<courses.length; c++ ) 
+{
+      var course=courses[c];
+//console.log(typeof(course.id));      
+      if (parseInt(course.id, 10) === Name)
+{
+//    console.log('Название курса'+course.name);      
+    optionsStr+=course.name;
+};
+};
+document.getElementById('CourseName').innerHTML=optionsStr;
+    };    
+
+//получение описания     
+ function ViewDescription() {    
+ //получение описания по номеру имени    
+    $.ajax(ajaxHandlerScript, {
+            type: 'GET',
+            dataType: 'html',
+           data: { func:'COURSE_INFO', id:Name },
+            success: courseInfoReady,
+            error: errorHandler
+        });        
+    };  
+      
+//запись описания курса   
+ function courseInfoReady(data) {
+Description = data;       
+document.getElementById('DescriptionContent').innerHTML=Description;        
+    };
+  
+//обработчик ошибок
+ function errorHandler(statusStr,errorStr) {
+        if (statusStr !== 'abort') {
+            alert(statusStr+' '+errorStr);
+        }
+    }
+
+</script>
+<br>
+
+
+    </body>
+</html>
