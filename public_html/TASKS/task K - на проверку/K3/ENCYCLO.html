@@ -33,7 +33,7 @@ var Description, Name;
 var sortirovkaName=[];          
 var sortirovkaId=[];
 var SPAState={};
-
+var courses;
 //получить список курсов
 
   // в закладке УРЛа будем хранить разделённые подчёркиваниями слова
@@ -79,7 +79,7 @@ var SPAState={};
     // обновляем вариабельную часть страницы под текущее состояние
     // это реализация View из MVC - отображение состояния модели в HTML-код
     var pageHTML = '';    
-        
+    if (!Name){Name=localStorage.getItem("Name");};           
     switch ( SPAState.pagename ) {
 //содержание первой стр.        
       case 'Main_':
@@ -87,19 +87,25 @@ var SPAState={};
     pageHTML+='<a href="javascript://" onclick="switchToContentPage()"> Ссылка <a>';
         break;
 //содержание второй стр.            
-      case 'Content_':
-    pageHTML+='<h1 style="text-align: center;">Оглавление</h1>';
+      case 'Content_':    
+   
+    pageHTML+='<h1 style="text-align: center;">Оглавление</h1>'; 
     ViewContent();    
     pageHTML+='<div id="ISelectedCourse1" style="text-align: left"></h1>';
+  
         break;
 //содержание третьей стр.            
-      case `About${Name}_`:
+      case `About${Name}_`:    
+
     pageHTML+='<h1 style="position: absolute; left:35vw; width: 60vw;" id="CourseName"></h1>';         
-    ViewName();  
+ 
     pageHTML+='<span style="text-align: left" id="DescriptionContent"></span>';
-    ViewDescription();
-    pageHTML+='<div id="ISelectedCourse2"></h1>';
-    pageHTML+=RepeatViewContent();
+     
+    pageHTML+='<div id="ISelectedCourse2"></h1>'; 
+    pageHTML+=RepeatViewContent(); 
+    
+    ViewDescription();// работает при перезагрузке     
+    ViewName(); 
         break;
     }
    document.getElementById('IPage').innerHTML = pageHTML;
@@ -142,22 +148,16 @@ var SPAState={};
   switchToStateFromURLHash();
   
   
-  
-function PROBA()  
-{  var str="<h1>ПРОБА</h1>";
-    return str;
-};
-  
-  
 
 //показ списка функций на 3 стр.
 function RepeatViewContent(){ 
- var optionsStr='';    
+    var optionsStr="";
     for (let x=0; x<sortirovkaName.length; x++)           
-        {          
-optionsStr+='<br>' + '-' + '<a href="javascript://" onclick=switchToAboutPage('+sortirovkaId[x]+')>'+sortirovkaName[x]+'</a>';             
-        };    
-   return optionsStr;     
+        {
+   // при вызове функции передается номер (id) курса и переход на третью стр.          
+   optionsStr+='<br>' + '-' + '<a href="javascript://" onclick=switchToAboutPage('+sortirovkaId[x]+')>'+sortirovkaName[x]+'</a>';             
+        };  
+return optionsStr;     
 };
     
 // показать перечень курсов на второй странице    
@@ -176,7 +176,7 @@ optionsStr+='<br>' + '-' + '<a href="javascript://" onclick=switchToAboutPage('+
  function сoursesListReady(data) {
 //  console.log(data);     
    
-        var courses=data;
+       courses=data;
    //  course.name - имя курса course.id название=цифра             
         for (let c=0; c<courses.length; c++) 
         { 
@@ -219,21 +219,25 @@ document.getElementById('ISelectedCourse1').innerHTML= optionsStr;
     };  
 
 //запись имени курса
- function сoursesNameReady(data) {
+ function сoursesNameReady(data) {   
+
 //console.log('использование имени курса Name='+Name+' для отображения на третьей вкладке');
 //console.log(typeof(Name));
 //console.log(data);
-var courses=data;
+courses=data;
 var optionsStr="";
+console.log('функция названия сработало с Name='+Name+'!');
+
+if (!Name){Name=localStorage.getItem("Name");};           
 
 for ( var c=0; c<courses.length; c++ ) 
-{
-      var course=courses[c];
+{    
 //console.log(typeof(course.id));      
-      if (parseInt(course.id, 10) === Name)
+//      if (parseInt(course.id, 10) === Name)
+       if ( parseInt(courses[c].id) == Name)
 {
-//    console.log('Название курса'+course.name);      
-    optionsStr+=course.name;
+    console.log('Название курса'+courses[c].name);      
+    optionsStr=courses[c].name;
 };
 };
 document.getElementById('CourseName').innerHTML=optionsStr;
@@ -241,7 +245,8 @@ document.getElementById('CourseName').innerHTML=optionsStr;
 
 //получение описания     
  function ViewDescription() {    
- //получение описания по номеру имени    
+ //получение описания по номеру имени 
+ 
     $.ajax(ajaxHandlerScript, {
             type: 'GET',
             dataType: 'html',
