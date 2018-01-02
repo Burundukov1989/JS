@@ -93,7 +93,7 @@ var SPAState={};
     pageHTML+='<div id="ISelectedCourse1" style="text-align: left"></h1>';
         break;
 //содержание третьей стр.            
-      case 'About_':
+      case `About${Name}_`:
     pageHTML+='<h1 style="position: absolute; left:35vw; width: 60vw;" id="CourseName"></h1>';         
     ViewName();  
     pageHTML+='<span style="text-align: left" id="DescriptionContent"></span>';
@@ -130,9 +130,10 @@ var SPAState={};
     console.log('сработала 2 стр.');
   }
 
-  function switchToAboutPage(selectedCourseId) {
-    switchToState( { pagename:'About' } );    
+  function switchToAboutPage(selectedCourseId) {    
     Name = selectedCourseId; 
+    switchToState( { pagename:`About${Name}`} );    
+    localStorage.setItem("Name", Name);  
     console.log('сработала 3 стр.');
     console.log('объявление номера курса Name='+Name+' для отображения на третьей вкладке');     
   };
