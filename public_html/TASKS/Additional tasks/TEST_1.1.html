@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TEST 1.1</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+<input type="button" id="main_button" value="Выполнить" onclick="Begin()"> <br>
+
+<div> Количество пробелов:<span id='sum'> </span> </div> <br>
+<span> Введите строку </span> <br>
+<textarea id="SizeArray" rows="5"></textarea>
+
+
+<script>
+
+
+ function Begin()
+ {   
+var j=[];   
+var counter=0; 
+var Newtext = document.getElementById("SizeArray").value; 
+j=Newtext.split('');
+var u=j.length;
+console.log(Newtext); 
+console.log("j="+j);    
+console.log("u="+u); 
+fact(u);//вызов рекурсивной функции
+document.getElementById("sum").innerHTML = counter; 
+
+ function fact(num)
+  { 
+   if (j[0] === " " && num<1)
+   {
+       ++counter;
+       console.log("Найден только один пробел!");
+   };
+   
+   if (num<1) //условия выхода из рекурсии
+   {return 0;};
+   
+    if (j[num] === " ")   
+      {           
+counter++;
+console.log("Найден пробел!"+counter);
+      }; 
+     return fact(num-1);
+  };
+ };
+
+ 
+
+    </script>
+    </body>
+</html>
