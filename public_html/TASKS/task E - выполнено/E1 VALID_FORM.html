@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>E1_VALID_FORM</title>
+    <meta name="viewport" content="width=device-width">
+    <style>
+        .TextInput {width: 200px;}
+
+         label {font-size: 18px;}
+         #Errordiv {color: red;
+                    display: inline-block; 
+                    position: absolute; 
+                    top: 30px; 
+                    left: 430px; 
+                    font-size: 18px; 
+                    white-space: nowrap;
+                    margin: 3px;}
+        div {margin: 1px;}    
+        
+        textarea   {border: 1px solid #888;
+                    overflow: auto;
+                    width: 390px;}
+        
+        #AllInput {display: inline-block; 
+                   position: absolute; 
+                   top: 30px; 
+                   left: 200px;}
+
+
+
+    </style>    
+</head>
+
+<body>
+
+
+<div>Для внесения вашего сайта в каталог, заполните форму:</div>
+
+<form action='http://fe.it-academy.by/TestForm.php' method="POST" id='form1' target='_blank' name="formName">
+
+<div style="display: inline-block">
+  
+<label>Разработчики:</label>
+<br>
+<label>Название сайта:</label>
+<br>
+<label>URL сайта:</label>
+<br>
+<label>Дата запуска сайта:</label>
+<br>
+<label>Посетителей в сутки:</label>
+<br>
+<label>Email для связи:</label>
+<br>
+<label>Рубрика каталога:</label>
+<br>
+<label>Размещение: </label>
+<br>
+<label>Разрешить отзывы: </label>
+<br>
+<label>Описание сайта:   </label>
+</div>  
+
+<br>    
+<textarea name="Text" form="form1" rows="5" onchange="emptyField(11)">Описание сайта</textarea> 
+<br>
+<input type='submit' value="Опубликовать">    
+
+<div id="AllInput">
+    
+<input type='text' class="TextInput" value="Бурундуков А.О." name="Name" onchange="emptyField(2)"/>
+<br>
+<input type='text' class="TextInput"  value="название сайта" name="SiteName" onchange="emptyField(3)"/>
+<br>
+<input type='text' class="TextInput" value="https://www.tut.by" name="URLSite" onchange="emptyField(4)"/>
+<br>  
+<input type='date' class="TextInput" name="Date" onchange="emptyField(5)"/>
+<br>     
+<input type='number' class="TextInput" value="25" name="NumberOfVisitors" onchange="emptyField(6)"/>
+<br>  
+<input type='email' class="TextInput" value="Burundukov1989@mail.ru" name="EmailSite" onchange="emptyField(7)"/>
+<br>  
+    <select name="TypeOfSite" onchange="emptyField(8)">
+            <option value="#">Выберите раздел</option>
+            <option value="Бытовая техника">Бытовая техника</option>
+            <option value="Здоровье">Здоровье</option>
+            <option value="Домашний уют">Домашний уют</option>
+    </select>
+<br>        
+    <input type='radio' name='advert' value="бесплатное" checked>бесплатное
+    <input type='radio' name='advert' value="платное">платное
+    <input type='radio' name='advert' value="VIP">VIP
+<br>     
+    <input type='checkbox' name="reviews"/>
+<br>   
+</div>   
+
+<div id="Errordiv">
+</div>    
+    
+</form>
+
+<script>
+    
+ var Errordiv = document.getElementById('Errordiv'); 
+ var newDiv=document.createElement('div');
+ var form = document.getElementById("form1"); 
+    
+   
+ for (let i=2; i <= 11; i++)
+ {   
+     newDiv=document.createElement('div');
+     newDiv.id = "div"+i;
+     newDiv.style.height='20px';
+     newDiv.style.visibility="hidden";
+     newDiv.innerHTML = 'Поле должно быть заполнено!';
+     Errordiv.appendChild(newDiv); 
+ };
+
+
+
+
+var textarea = form.elements[0];
+var validateBtn = form.elements[1];
+var devField = form.elements[2];
+var nameSiteField = form.elements[3];
+var urlSiteField = form.elements[4];
+var startSite = form.elements[5];
+var dailyUsers = form.elements[6];
+var mail = form.elements[7];
+var catPart = form.elements[8];
+var radio1 = form.elements[9];
+var radio2 = form.elements[10];
+var radio3 = form.elements[11];
+var checkbox = form.elements[12];
+
+
+
+var emptyField = function(num)
+{    
+     if (!form.elements[num].value)
+     {
+    document.getElementById("div"+num).style.visibility="visible";
+     }
+     else document.getElementById("div"+num).style.visibility="hidden";
+     
+     if (num=11 && !form.elements[0].value)
+     {
+    document.getElementById("div11").style.visibility="visible";
+     }
+     else document.getElementById("div11").style.visibility="hidden";   
+};
+
+
+function DateField() 
+{
+    var reg = /^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])$/;
+    var checkDate = form.elements[5].value;
+console.log(checkDate);    
+    if (!reg.test(checkDate)) {
+        console.log("Введите корректныt данные!");
+        form.elements[5].focus();
+        document.getElementById("div5").style.visibility="visible";    
+    }
+    else (console.log('Введен корректный адрес'));    
+};
+
+
+var checkboxField = function () 
+{
+    if (checkbox.checked) 
+    { 
+ console.log('Чекбокс выбран');
+    }
+
+};
+
+function catCheckField() 
+{
+    select = form.elements.TypeOfSite;
+    if (select.options[0].selected)
+    {
+    document.getElementById("div8").style.visibility="visible";        
+    }
+    else document.getElementById("div8").style.visibility="hidden";  
+};
+
+
+function checkRadio () 
+{
+     for (let i = 9; i <= 11; i++) 
+     {
+     if (form.elements[i].checked)
+       {console.log ('Выбран' + i + 'элемент');}
+     };   
+};
+
+
+form.addEventListener('submit', function(event) 
+{
+    checkboxField();
+    checkRadio();
+    catCheckField();
+    DateField();
+ 
+  for (let i=2; i <= 11; i++)      
+  { var style=getComputedStyle(document.getElementById("div"+i)).visibility;
+//    console.log ('style=' + i); 
+//    console.log (style);
+      
+ if  (style==="visible")
+ {
+ //   console.log('Отправка не сработала!');
+    event.preventDefault();
+ }  
+ 
+  }
+  
+});
+
+
+
+
+</script>
+
+</body>
+
+</html>
+
+
+
